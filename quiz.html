@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flower Quiz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="audioGate">
+    <button onclick="startExperience()">🌸 Start Experience</button>
+</div>
+
+<audio id="bgMusic" src="sounds/music.mp3" loop></audio>
+<audio id="clickSound" src="sounds/click.mp3"></audio>
+<audio id="resultSound" src="sounds/result.mp3"></audio>
+
+<nav>
+    <a href="index.html" onclick="playClick()">Home</a>
+    <a href="flowers.html" onclick="playClick()">Flowers</a>
+    <a href="quiz.html" onclick="playClick()">Quiz</a>
+</nav>
+
+<section>
+<h2>Find Your Perfect Flower</h2>
+
+<div class="quiz">
+<p>Fragrance preference?</p>
+<select id="q1">
+<option value="lily">Strong</option>
+<option value="sunflower">Light</option>
+</select>
+
+<p>Favorite color?</p>
+<select id="q2">
+<option value="rose">Red</option>
+<option value="sunflower">Yellow</option>
+<option value="lily">White</option>
+</select>
+
+<p>Personality?</p>
+<select id="q3">
+<option value="orchid">Elegant</option>
+<option value="daisy">Simple</option>
+<option value="sunflower">Cheerful</option>
+</select>
+
+<button onclick="playClick(); recommend(); playResult()">Get My Flower</button>
+</div>
+
+<div id="result"></div>
+</section>
+
+<script>
+function startExperience() {
+    const bgMusic = document.getElementById("bgMusic");
+    bgMusic.volume = 0.3;
+    bgMusic.play();
+    document.getElementById("audioGate").style.display = "none";
+}
+
+function playClick() {
+    const click = document.getElementById("clickSound");
+    click.currentTime = 0;
+    click.play();
+}
+
+function playResult() {
+    const result = document.getElementById("resultSound");
+    result.currentTime = 0;
+    result.play();
+}
+
+function recommend() {
+    const answers = [q1.value, q2.value, q3.value];
+    const flower = answers.sort((a,b)=>
+        answers.filter(v=>v===a).length -
+        answers.filter(v=>v===b).length
+    ).pop();
+
+    const data = {
+        lily: ["Lily","https://images.unsplash.com/photo-1501004318641-b39e6451bec6","Elegant and calming."],
+        rose: ["Rose","https://images.unsplash.com/photo-1509042239860-f550ce710b93","Romantic and passionate."],
+        sunflower: ["Sunflower","https://images.unsplash.com/photo-1490750967868-88aa4486c946","Bright and joyful."],
+        orchid: ["Orchid","https://images.unsplash.com/photo-1524594154908-eddc9c1a14e3","Luxurious and rare."],
+        daisy: ["Daisy","https://images.unsplash.com/photo-1498579809087-ef1e558fd1da","Simple and peaceful."]
+    };
+
+    result.innerHTML = `
+        <h2>${data[flower][0]}</h2>
+        <img src="${data[flower][1]}">
+        <p>${data[flower][2]}</p>
+    `;
+}
+</script>
+
+</body>
+</html>
